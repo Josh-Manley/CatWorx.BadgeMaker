@@ -6,38 +6,28 @@ namespace CatWorx.BadgeMaker
 {
   class Program
   {
-    // static List<Employee> GetEmployees()
-    // {
-    //   List<Employee> employees = new List<Employee>();
-    //   while (true)
-    //   {
-    //     Console.WriteLine("Please enter first name: (leave empty to exit): ");
-    //     string firstName = Console.ReadLine() ?? "";
-    //     if (firstName == "")
-    //     {
-    //       break;
-    //     }
-    //     Console.Write("Enter last name: ");
-    //     string lastName = Console.ReadLine() ?? "";
-
-    //     Console.Write("Enter ID: ");
-    //     int id = Int32.Parse(Console.ReadLine() ?? "");
-
-    //     Console.Write("Enter Photo URL: ");
-    //     string photoUrl = Console.ReadLine() ?? "";
-
-    //     Employee currentEmployee = new Employee(firstName, lastName, id, photoUrl);
-    //     employees.Add(currentEmployee);
-    //   }
-    //   return employees;
-    // }
-
     async static Task Main(string[] args)
     {
-      List<Employee> employees = await PeopleFetcher.GetFromApi();
-      Util.PrintEmployees(employees);
-      Util.MakeCSV(employees);
-      await Util.MakeBadges(employees);
+
+      Console.WriteLine("Do you want to fetch employee data from the API? (if yes press'y'. if no press any other key)");
+
+      ConsoleKeyInfo cki = Console.ReadKey();
+      Console.WriteLine();
+
+      if (cki.Key == ConsoleKey.Y)
+      {
+        List<Employee> employees = await PeopleFetcher.GetFromApi();
+        Util.PrintEmployees(employees);
+        Util.MakeCSV(employees);
+        await Util.MakeBadges(employees);
+      }
+      else
+      {
+        List<Employee> employees = PeopleFetcher.GetEmployees();
+        Util.PrintEmployees(employees);
+        Util.MakeCSV(employees);
+        await Util.MakeBadges(employees);
+      }
     }
   }
 }
